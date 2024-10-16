@@ -3,18 +3,33 @@
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
+    "repositories": [
+	    {
+	        "type": "composer",
+	        "url": "https://erpag:erpag2013@toran.erpag.org/repo/private/",
+	        "canonical": true
+	    }
+    ],
     "require": {
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "symfony/console": "7.1.*",
-        "symfony/dotenv": "7.1.*",
+        "erpag/db-query-service-bundle": "^4.0",
+        "erpag/user-bundle": "^7.0",
+        "symfony/apache-pack": "^1.0",
+        "symfony/asset": "7.0.*",
+        "symfony/console": "7.0.*",
+        "symfony/dotenv": "7.0.*",
         "symfony/flex": "^2",
-        "symfony/framework-bundle": "7.1.*",
-        "symfony/runtime": "7.1.*",
-        "symfony/yaml": "7.1.*"
-    },
-    "require-dev": {
+        "symfony/framework-bundle": "7.0.*",
+        "symfony/monolog-bundle": "^3.0",
+        "symfony/runtime": "7.0.*",
+        "symfony/security-bundle": "7.0.*",
+        "symfony/stopwatch": "7.0.*",
+        "symfony/twig-bundle": "7.0.*",
+        "symfony/yaml": "7.0.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
@@ -62,7 +77,11 @@
     "extra": {
         "symfony": {
             "allow-contrib": false,
-            "require": "7.1.*"
+            "require": "7.0.*"
         }
+    },
+    "require-dev": {
+        "symfony/debug-bundle": "7.0.*",
+        "symfony/web-profiler-bundle": "7.0.*"
     }
 }

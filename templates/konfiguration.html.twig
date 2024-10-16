@@ -1,0 +1,325 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} &middot; {{ 'Konfiguration'|trans }}{% endblock %}
+
+{% block navbar %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('index') }}"><span class="fa fa-home"></span></a></li>
+            <li class="breadcrumb-item"><a href="{{ path('adressen') }}">{{ 'Adressen'|trans }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ 'Konfiguration'|trans }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+<span id="paramAddressId" class="d-none">{{ addressId }}</span>
+<h3>
+    {{ adrName }} ({{adrOrt}})
+</h3>
+<form action="{{ path('zusammenfassung', {addressId: addressId, directory: directory}) }}" method="POST">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xl-6 col-12">
+                {# <div class="row mb-2">
+                    <label for="company" class="col-sm-3 col-form-label">{{ 'Ausführung Grundmodul'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputAusfuehrungGrundmodul" name="ausfuehrungGrundmodul" autocomplete="off" placeholder="{{ 'Unternehmen'|trans }}" value="{{inputAusfuehrungGrundmodul}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="iputCompanyTel" class="col-sm-3 col-form-label">{{ 'Telefon'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="tel" class="form-control" id="iputCompanyTel" name="companyTel" autocomplete="off" placeholder="{{ 'Telefon'|trans }}" value="{{inputCompanyTel}}">
+                    </div>
+                </div>
+                <div class="row mb-2" id="inputContactMailGroup">
+                    <label for="inputCompanyMail" class="col-sm-3 col-form-label">{{ 'Mail'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="email" class="form-control" id="inputCompanyMail" name="companyMail" autocomplete="off" placeholder="{{ 'Mail'|trans }}" value="{{inputCompanyMail}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputCompanyStreet" class="col-sm-3 col-form-label">{{ 'Anschrift'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputCompanyStreet" name="companyStreet" autocomplete="off" placeholder="{{ 'Straße und Nr.'|trans }}"  value="{{inputCompanyStreet}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputAddress" class="col-sm-3 col-form-label">{{ 'PLZ/Ort'|trans }}</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="inputPlz" name="companyPlz" autocomplete="off" placeholder="{{ 'PLZ'|trans }}" value="{{inputCompanyPlz}}">
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="address" class="form-control" id="place" name="companyPlace" autocomplete="off" placeholder="{{ 'Ort'|trans }}" value="{{inputCompanyPlace}}">
+                    </div>
+                </div> #}
+
+                {# Grundmodul #}
+                <div class="row mb-2" id="inputGrundmodulGroup">
+                    <label for="inputAusfuehrungGrundmodul" class="col-sm-6 col-form-label">{{ 'Ausführung Grundmodul'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputAusfuehrungGrundmodul" name="ausfuehrungGrundmodul" aria-label="Ausfuehrung Grundmodul" required>
+                            <option value="Gekuehlt"
+                            {% if inputAusfuehrungGrundmodul == "Gekuehlt" %}
+                            selected
+                            {% endif %}
+                            >Gekühlt</option>
+                            <option value="Ungekuehlt"
+                            {% if inputAusfuehrungGrundmodul == "Ungekuehlt" %}
+                            selected
+                            {% endif %}
+                            >Ungekühlt</option>
+                        </select>
+                    </div>
+                </div>
+                {# Kaffeemaschine #}
+                <div class="row mb-2" id="inputKaffeemaschineGroup">
+                    <label for="inputKaffeemaschine" class="col-sm-6 col-form-label">{{ 'Kaffeemaschine'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputKaffeemaschine" name="kaffeemaschine" aria-label="Kaffeemaschine" required>
+                            <option value="Ja"
+                            {% if inputKaffeemaschine == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputKaffeemaschine == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                {# Verlängerung links #}
+                <div class="row mb-2" id="inputVerlaengerungLinksGroup">
+                    <label for="inputVerlaengerungLinks" class="col-sm-6 col-form-label">{{ 'Verlängerung links'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputVerlaengerungLinks" name="verlaengerungRechts" aria-label="Verlängerung links" required>
+                            <option value="Ja"
+                            {% if inputVerlaengerungLinks == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputVerlaengerungLinks == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                {# Verlängerung rechts #}
+                <div class="row mb-2" id="inputVerlaengerungRechtsGroup">
+                    <label for="inputVerlaengerungRechts" class="col-sm-6 col-form-label">{{ 'Verlängerung rechts'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputVerlaengerungRechts" name="verlaengerungRechts" aria-label="Verlängerung rechts" required>
+                            <option value="Ja"
+                            {% if inputVerlaengerungRechts == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputVerlaengerungRechts == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                {# Verkleidung links #}
+                <div class="row mb-2" id="inputVerkleidungLinksGroup">
+                    <label for="inputVerkleidungLinks" class="col-sm-6 col-form-label">{{ 'Verkleidung links'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputVerkleidungLinks" name="verkleidungLinks" aria-label="Verkleidung links" required>
+                            <option value="Ja"
+                            {% if inputVerkleidungLinks == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputVerkleidungLinks == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                {# Revisionstür links #}
+                <div class="row mb-2" id="inputTuerLinksGroup">
+                    <label for="inputTuerLinks" class="col-sm-6 col-form-label">{{ 'Revisionstür links'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputTuerLinks" name="tuerLinks" aria-label="Tür links" required>
+                            <option value="Ja"
+                            {% if inputTuerLinks == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputTuerLinks == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                {# Verkleidung rechts #}
+                <div class="row mb-2" id="inputVerkleidungRechtsGroup">
+                    <label for="inputVerkleidungRechts" class="col-sm-6 col-form-label">{{ 'Verkleidung rechts'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputVerkleidungRechts" name="verkleidungRechts" aria-label="Verkleidung rechts" required>
+                            <option value="Ja"
+                            {% if inputVerkleidungRechts == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputVerkleidungRechts == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                {# Revisionstür rechts #}
+                <div class="row mb-2" id="inputTuerRechtsGroup">
+                    <label for="inputTuerRechts" class="col-sm-6 col-form-label">{{ 'Revisionstür rechts'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputTuerRechts" name="tuerRechts" aria-label="Tür rechts" required>
+                            <option value="Ja"
+                            {% if inputTuerRechts == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputTuerRechts == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                {# Verkleidung hinten #}
+                <div class="row mb-2" id="inputVerkleidungHintenGroup">
+                    <label for="inputVerkleidungHinten" class="col-sm-6 col-form-label">{{ 'Verkleidung hinten'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputVerkleidungHinten" name="verkleidungHinten" aria-label="Verkleidung hinten" required>
+                            <option value="Ja"
+                            {% if inputVerkleidungHinten == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputVerkleidungHinten == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                {# Revisionstür hinten #}
+                <div class="row mb-2" id="inputTuerHintenGroup">
+                    <label for="inputTuerHinten" class="col-sm-6 col-form-label">{{ 'Revisionstür hinten'|trans }}</label>
+                    <div class="col-sm-6">
+                        <select class="form-select" id="inputTuerHinten" name="tuerHinten" aria-label="Tür hinten" required>
+                            <option value="Ja"
+                            {% if inputTuerHinten == "Ja" %}
+                            selected
+                            {% endif %}
+                            >Ja</option>
+                            <option value="Nein"
+                            {% if inputTuerHinten == "Nein" %}
+                            selected
+                            {% endif %}
+                            >Nein</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="col d-flex flex-column">
+                    <input type="hidden" name="sent" value=true>
+                    <button type="submit" class="btn btn-primary" type="button" id="button-addon1">{{ 'Konfiguration absenden'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function setFieldsHideAndShow(value, haveValue, targetGroup, targetValue){
+        if($('#'+value).val() == haveValue)
+        {
+            $('#'+targetGroup).removeClass("d-none");
+        }
+        else
+        {
+            $('#'+targetGroup).addClass("d-none");
+            $('#'+targetValue).val("Nein");
+        }
+    }
+
+    function setFieldWithTwoValuesHideAndShow(valueLinks, valueRechts, targetGroup, targetValue){
+        if($('#'+valueLinks).val() == 'Ja' || $('#'+valueRechts).val() == 'Ja')
+        {
+            $('#'+targetGroup).removeClass("d-none");
+        }
+        else
+        {
+            $('#'+targetGroup).addClass("d-none");
+            $('#'+targetValue).val("Nein");
+        }
+    }
+
+    {# //Wenn Verlängerung links nein, Verkleidung links auch nicht möglich
+    $('#inputKaffeemaschine').on('change', function() {
+        setFieldsHideAndShow('inputKaffeemaschine', 'inputVerkleidungLinksGroup', 'inputVerkleidungLinks');
+        $('#inputVerkleidungLinks').change();
+    });
+
+    //Wenn Verlängerung rechts nein, Verkleidung rechts auch nicht möglich
+    $('#inputVerlaengerungRechts').on('change', function() {
+        setFieldsHideAndShow('inputVerlaengerungRechts', 'inputVerkleidungRechtsGroup', 'inputVerkleidungRechts');
+        $('#inputVerkleidungRechts').change();
+    });
+
+    //Wenn Verkleidung links nein, Revisionstür links auch nicht möglich
+    $('#inputVerkleidungLinks').on('change', function() {
+        setFieldsHideAndShow('inputVerkleidungLinks', 'inputTuerLinksGroup', 'inputTuerLinks');
+        $('#inputVerkleidungHinten').change();
+    });
+    //Wenn Verkleidung rechts nein, Revisionstür rechts auch nicht möglich
+    $('#inputVerkleidungRechts').on('change', function() {
+        setFieldsHideAndShow('inputVerkleidungRechts', 'inputTuerRechtsGroup', 'inputTuerRechts');
+    });
+    //Wenn Verkleidung hinten nein, Revisionstür hinten auch nicht möglich
+    $('#inputVerkleidungHinten').on('change', function() {
+        setFieldsHideAndShow('inputVerkleidungHinten', 'inputTuerHintenGroup', 'inputTuerHinten');
+    });
+
+    $('#inputContactSelect').on('change', function() {
+        setNewContactFieldsHideOrShow();
+    }); #}
+
+    $('select').on('change', function() {
+        setFieldsHideAndShow('inputKaffeemaschine', 'Nein', 'inputVerlaengerungLinksGroup', 'inputVerlaengerungLinks');
+        setFieldWithTwoValuesHideAndShow('inputKaffeemaschine', 'inputVerlaengerungLinks', 'inputVerkleidungLinksGroup', 'inputVerkleidungLinks')
+        setFieldsHideAndShow('inputVerlaengerungRechts', 'Ja', 'inputVerkleidungRechtsGroup', 'inputVerkleidungRechts');
+        setFieldWithTwoValuesHideAndShow('inputVerkleidungLinks', 'inputVerkleidungRechts', 'inputVerkleidungHintenGroup', 'inputVerkleidungHinten')
+        setFieldsHideAndShow('inputVerkleidungLinks', 'Ja', 'inputTuerLinksGroup', 'inputTuerLinks');
+        setFieldsHideAndShow('inputVerkleidungRechts', 'Ja', 'inputTuerRechtsGroup', 'inputTuerRechts');
+        setFieldsHideAndShow('inputVerkleidungHinten', 'Ja', 'inputTuerHintenGroup', 'inputTuerHinten');
+    });
+
+    $(document).ready(function () {
+        setFieldsHideAndShow('inputKaffeemaschine', 'Nein', 'inputVerlaengerungLinksGroup', 'inputVerlaengerungLinks');
+        setFieldsHideAndShow('inputVerlaengerungRechts', 'Ja', 'inputVerkleidungRechtsGroup', 'inputVerkleidungRechts');
+        setFieldWithTwoValuesHideAndShow('inputVerkleidungLinks', 'inputVerkleidungRechts', 'inputVerkleidungHintenGroup', 'inputVerkleidungHinten')
+        setFieldsHideAndShow('inputVerkleidungLinks', 'Ja', 'inputTuerLinksGroup', 'inputTuerLinks');
+        setFieldsHideAndShow('inputVerkleidungRechts', 'Ja', 'inputTuerRechtsGroup', 'inputTuerRechts');
+        setFieldsHideAndShow('inputVerkleidungHinten', 'Ja', 'inputTuerHintenGroup', 'inputTuerHinten');
+    });
+
+</script>
+
+{% endblock %}

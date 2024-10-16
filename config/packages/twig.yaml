@@ -1,0 +1,9 @@
+twig:
+    file_name_pattern: '*.twig'
+    globals:
+        webapp_title: '%app.webapp_title%'
+        webapp_company_title: '%app.webapp_company_title%'
+        icon_prefix: '%app.icon.prefix%'
+when@test:
+    twig:
+        strict_variables: true

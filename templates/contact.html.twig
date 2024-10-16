@@ -1,0 +1,204 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} &middot; {{ 'Ansprechpartner'|trans }}{% endblock %}
+
+{% block navbar %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('index') }}"><span class="fa fa-home"></span></a></li>
+            <li class="breadcrumb-item"><a href="{{ path('adressen') }}">{{ 'Adressen'|trans }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ 'Ansprechpartner'|trans }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+<span id="paramAddressId" class="d-none">{{ addressId }}</span>
+<h3>
+    {% if address is not empty %}
+        {{ address.adrName }} ({{address.ort}})
+    {% else %}
+        {{ 'Neukontakt'|trans}}
+    {% endif %}
+</h3>
+<form method="post">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xl-6 col-12">
+                {# Nur bei Neukunden #}
+                {% if address is empty %}
+                <div class="row mb-2">
+                    <label for="company" class="col-sm-6 col-form-label">{{ 'Unternehmen'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="company" name="companyName" autocomplete="off" placeholder="{{ 'Unternehmen'|trans }}" value="{{inputCompanyName}}" required>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="iputCompanyTel" class="col-sm-6 col-form-label">{{ 'Telefon'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="tel" class="form-control" id="iputCompanyTel" name="companyTel" autocomplete="off" placeholder="{{ 'Telefon'|trans }}" value="{{inputCompanyTel}}">
+                    </div>
+                </div>
+                <div class="row mb-2" id="inputContactMailGroup">
+                    <label for="inputCompanyMail" class="col-sm-6 col-form-label">{{ 'Mail'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="email" class="form-control" id="inputCompanyMail" name="companyMail" autocomplete="off" placeholder="{{ 'Mail'|trans }}" value="{{inputCompanyMail}}" required> 
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputCompanyStreet" class="col-sm-6 col-form-label">{{ 'Anschrift'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputCompanyStreet" name="companyStreet" autocomplete="off" placeholder="{{ 'Straße und Nr.'|trans }}"  value="{{inputCompanyStreet}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputAddress" class="col-sm-6 col-form-label">{{ 'PLZ/Ort'|trans }}</label>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" id="inputPlz" name="companyPlz" autocomplete="off" placeholder="{{ 'PLZ'|trans }}" value="{{inputCompanyPlz}}" required>
+                    </div>
+                    <div class="col-sm-4">
+                        <input type="address" class="form-control" id="place" name="companyPlace" autocomplete="off" placeholder="{{ 'Ort'|trans }}" value="{{inputCompanyPlace}}" required>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputCompanyCountry" class="col-sm-6 col-form-label">{{ 'Land'|trans }}</label>
+                    <div class="col-sm-6">
+                    <select class="form-select" id="inputCompanyCountry" name="companyCountry" aria-label="Default select example" required>
+                        {% for country in countries %}
+                            <option
+                            {% if inputCompanyCountry == country.kurzzeichen %}
+                                selected
+                            {% elseif inputCompanyCountry == '' %}
+                                {% if country.kurzzeichen == 'DE' %}
+                                 selected
+                                {% endif %}
+                            {% endif %}
+                            value={{country.kurzzeichen}}> {{country.bezeichnung}} </option>
+                        {% endfor %}
+                        <option
+                        {% if inputCompanyCountry == "Other" %}
+                            selected
+                        {% endif %}
+                        value="Other"> {{ 'Anderes'|trans }} </option>
+                </select>
+                    </div>
+                </div>
+                <div class="row mb-2 d-none" id="inputCompanyOtherCountryGroup">
+                    <label for="inputCompanyOtherCountry" class="col-sm-6 col-form-label"></label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputCompanyOtherCountry" name="companyOtherCountry" autocomplete="off" placeholder="{{ 'Land'|trans }}" value="{{inputCompanyOtherCountry}}">
+                    </div>
+                </div>
+                {% else %}
+                <div class="row mb-2">
+                    <label for="inputContactSelect" class="col-sm-6 col-form-label">{{ 'Ansprechpartner'|trans }}</label>
+                    <div class="col-sm-6">
+                    <select class="form-select" id="inputContactSelect" name="contactSelect" aria-label="Default select example" required>
+                        {% for contact in contacts %}
+                            <option
+                            {% if inputContactSelect == contact.id %}
+                                selected
+                            {% endif %}
+                            value={{contact.id}}> {{contact.fullName}} </option>
+                        {% endfor %}
+                            <option 
+                            {% if inputContactSelect == "Other" %}
+                                selected
+                            {% endif %}
+                            value="Other"> {{ 'Neu'|trans }} </option>
+                    </select>
+                    </div>
+                </div>
+                {% endif %}
+                <div class="row mb-2 {% if address is not empty and contacts|length > 0 %} d-none {% endif %}" id="inputContactGroup">
+                    <label for="inputContactName" class="col-sm-6 col-form-label">{{ 'Ansprechpartner'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputContactName" name="contactName" autocomplete="off" placeholder="{{ 'Ansprechpartner'|trans }}" value="{{inputContactName}}">
+                    </div>
+                </div>
+                <div class="row mb-2 {% if address is not empty and contacts|length > 0 %} d-none {% endif %}" id="inputContactFunctionGroup">
+                    <label for="inputContactFunction" class="col-sm-6 col-form-label">{{ 'Funktion'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputContactFunction" name="contactFunction" autocomplete="off" placeholder="{{ 'Funktion'|trans }}" value="{{inputContactFunction}}">
+                    </div>
+                </div>
+                <div class="row mb-2 {% if address is not empty and contacts|length > 0 %} d-none {% endif %}" id="inputContactTelefonGroup">
+                    <label for="inputContactTel" class="col-sm-6 col-form-label">{{ 'Telefon'|trans }}:</label>
+                    <div class="col-sm-6">
+                        <input type="tel" class="form-control" id="inputContactTel" name="contactTel" autocomplete="off" placeholder="{{ 'Telefon'|trans }}" value="{{inputContactTel}}">
+                    </div>
+                </div>
+                <div class="row mb-2 {% if address is not empty and contacts|length > 0 %} d-none {% endif %}" id="inputContactMailGroup">
+                    <label for="inputContactMail" class="col-sm-6 col-form-label">{{ 'Mail'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="email" class="form-control" id="inputContactMail" name="contactMail" autocomplete="off" placeholder="{{ 'Mail'|trans }}" value="{{inputContactMail}}">
+                    </div>
+                </div>
+
+                <div class="row mb-2">
+                    <label for="inputNote" class="col-sm-6 col-form-label">Notiz</label>
+                    <div class="col-sm-6">
+                        <textarea class="form-control" id="inputNote" name="note" aria-label="Default select example" row="7" autocomplete="off">{{inputNote}}</textarea>
+                    </div>
+                </div>
+
+                <div class="col-12 d-flex flex-column">
+                    <input type="hidden" name="sent" value=true>
+                    <button type="submit" class="btn btn-primary" type="button" id="button-addon1">{{ 'Konfiguration starten'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+    function setNewContactFieldsHideOrShow(){
+        paramAddressId = $('#paramAddressId').html();
+
+        if($('#inputContactSelect').val() == 'Other' || paramAddressId == 0)
+        {
+            $("#inputContact").prop('required',true);
+            $("#inputContactName").prop('required',true);
+            $('#inputContactGroup').removeClass("d-none");
+            $('#inputContactFunctionGroup').removeClass("d-none");
+            $('#inputContactMailGroup').removeClass("d-none");
+            $('#inputContactTelefonGroup').removeClass("d-none");
+        }
+        else
+        {
+            $("inputContact").prop('required',false);
+            $('#inputContactFunctionGroup').addClass("d-none");
+            $('#inputContactGroup').addClass("d-none");
+            $('#inputContactMailGroup').addClass("d-none");
+            $('#inputContactTelefonGroup').addClass("d-none");
+        }
+    }
+
+    function setOtherCountryFieldsHideOrShow(){
+        if($('#inputCompanyCountry').val() == 'Other')
+        {
+            $('#inputCompanyOtherCountryGroup').removeClass("d-none");
+        }
+        else
+        {
+            $('#inputCompanyOtherCountryGroup').addClass("d-none");
+        }
+    }
+
+    $('#inputCompanyCountry').on('change', function() {
+        setOtherCountryFieldsHideOrShow();
+    });
+
+    $('#inputContactSelect').on('change', function() {
+        setNewContactFieldsHideOrShow();
+    });
+
+    $(document).ready(function () {
+        setNewContactFieldsHideOrShow();
+        setOtherCountryFieldsHideOrShow();
+    });
+
+</script>
+
+{% endblock %}

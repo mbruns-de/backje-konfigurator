@@ -1,0 +1,58 @@
+default:
+    select:
+        - ID: ADR_ID
+        - ADR_NAME: NAME_FIRMA
+        - KURZBEZEICHNUNG: KURZBEZEICHNUNG
+        - STRASSE: STRASSE
+        - ORT: ORT
+        - PLZ: PLZ
+        - LAND: LAND
+        - AKTIV: AKTIV
+        - ADDRESSTYPE_ID: ADRESS_ART_ID
+        - BRANCHE: (select BRANCHE from ADR_BRANCHEN where BRANCHEN_ID = ADR_STAMM.BRANCHE_ID)
+        - FULL_SEARCH: (NAME_FIRMA + ',' + STRASSE + ',' + ORT + ',' + PLZ)
+    from:
+        ADR_STAMM
+    where:
+        AKTIV = 1
+        and ADDRESSTYPE_ID in (10)
+    order:
+        ADR_NAME, ADDRESSTYPE_ID, ORT
+
+by_id:
+    extends: Address:default
+    override:
+        where:
+            ADR_ID = [ID]
+
+search:
+    extends: Address:default
+    override:
+        where:
+            AKTIV = 1
+            and ADDRESSTYPE_ID in (10)
+            and FULL_SEARCH like [FILTER]
+
+places:
+    select:
+        - ORT: ORT
+        - PLZ: PLZ
+        - ISO_KZ: ISO_KZ
+    from:
+        ST_LAENDER_PLZ
+
+places_by_country:
+    extends: Messe:places
+    override:
+        where:
+            ISO_KZ = [ISO_KZ]
+
+countries:
+    select:
+        - BEZEICHNUNG: BEZEICHNUNG_D
+        - KURZZEICHEN: ISO_KZ
+        - TEL_VORWAHL: TELEFONVORWAHL
+    from:
+        ST_LAENDER_ISO
+    order:
+        BEZEICHNUNG

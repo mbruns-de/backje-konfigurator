@@ -1,0 +1,41 @@
+{% extends 'layout.html.twig' %}
+
+{% block navbar %}
+{% endblock %}
+
+{% block body %}
+{% block content %}
+<span id="current-stage" class="d-none">login</span>
+<div class="container-fluid mt-5">
+    <div class="offset-sm-2 col-sm-8 offset-md-3 col-md-6 offset-lg-4 col-lg-4">
+        <div class="text-center">
+        <h2 class="fw-bold">
+            {{ webapp_title }}
+            {% set icon_subfolder = '' %}
+
+            {% if icon_prefix is not null %}
+                {% set icon_subfolder = icon_prefix ~ '/' %}
+            {% endif %}
+
+            <img class="rounded-circle float-right" src="{{  asset('_icons/' ~ icon_subfolder ~ '/favicon-96x96.png') }}" height="55" style="border: 1px solid #DDDDDD;">
+        </h2>
+        </div>
+        <form action="{{ path('erpag_security_login_check') }}" method="post">
+            <div class="mb-3">
+                <label for="inputName" class="form-label">Benutzername</label>
+                <input type="text" class="form-control" id="inputName" name="_username" placeholder="Benutzername" required="required">
+            </div>
+            <div class="mb-3">
+                <label for="inputPassword" class="form-label">Passwort</label>
+                <input type="password" class="form-control" id="inputPassword" name="_password" placeholder="Passwort" required="required">
+            </div>
+            <div class="d-grid gap-2">
+                <input type="hidden" value="{{ redirect_path }}" name="_redirect_path">
+                <button type="submit" class="btn btn-outline-primary btn-block">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+{% endblock %}
+

@@ -1,0 +1,18 @@
+{% extends 'layout.html.twig' %}
+
+{% block navbar %}
+    {# <li class="breadcrumb-item active" aria-current="page">Projekte</li> #}
+{% endblock %}
+
+{% block content %}
+<div class="list-group">
+    <a href="{{ path('adressen') }}" class="list-group-item list-group-item-action">
+        <span class="bi bi-ui-checks"></span>
+        {{ 'Neue Konfiguration'|trans }}
+    </a>
+    <a href="{{ path('amortisierung') }}" class="list-group-item list-group-item-action">
+        <span class="bi bi-calculator"></span>
+        {{ 'Amortisationsrechnung '|trans }}
+    </a>
+</div>
+{% endblock %}

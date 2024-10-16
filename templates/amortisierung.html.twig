@@ -1,0 +1,103 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}{{ parent() }} &middot; {{ 'Konfiguration'|trans }}{% endblock %}
+
+{% block navbar %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('index') }}"><span class="fa fa-home"></span></a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ 'Amortisierungsrechner'|trans }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+
+<h3>
+    {{ 'Amortisierungsrechner'|trans }}
+</h3>
+<form method="POST">
+    <div class="form-group">
+        <div class="row">
+            <div class="col-xl-8 col-12">
+                <div class="row mb-2">
+                    <label for="inputGesamtsumme" class="col col-form-label">{{ 'Gesamtsumme in Euro'|trans }}</label>
+                    <div class="col">
+                        <input type="number" step="0.01" class="form-control" id="inputGesamtsumme" name="gesamtsumme" autocomplete="off" placeholder="{{ 'Gesamtsumme in Euro'|trans }}" value="{{inputGesamtsumme}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputArbeitszeit" class="col-sm-6 col-form-label">{{ 'Eingesparte Arbeitszeit Verkäuferin in h'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="number" step="0.1" class="form-control" id="inputArbeitszeit" name="arbeitszeit" autocomplete="off" placeholder="{{ 'Eingesparte Arbeitszeit Verkäuferin in h'|trans }}" value="{{inputArbeitszeit}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputWochen" class="col-sm-6 col-form-label">{{ 'Produktive Wochenzahl pro Jahr'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" id="inputWochen" name="wochen" autocomplete="off" placeholder="{{ 'Produktive Wochenzahl pro Jahr'|trans }}" value="{{inputWochen}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputStundenleistung" class="col-sm-6 col-form-label">{{ 'Stundenleistung Verkauf in Euro'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="number" step="0.1" class="form-control" id="inputStundenleistung" name="stundenleistung" autocomplete="off" placeholder="{{ 'Stundenleistung Verkauf in Euro'|trans }}" value="{{inputStundenleistung}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputTageProMonat" class="col-sm-6 col-form-label">{{ 'Tage pro Monat'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" id="inputTageProMonat" name="tageProMonat" autocomplete="off" placeholder="{{ 'Tage pro Monat'|trans }}" value="{{inputTageProMonat}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputUmsatzProTag" class="col-sm-6 col-form-label">{{ 'Umsatz pro Tag in Euro'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputUmsatzProTag" name="umsatzProTag" autocomplete="off" placeholder="{{ 'Umsatz pro Tag in Euro'|trans }}" value="{{inputUmsatzProTag| number_format(2, ',', '.')}} €" disabled>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputUmsatzProJahr" class="col-sm-6 col-form-label">{{ 'Umsatz pro Jahr in Euro'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputUmsatzProJahr" name="umsatzProJahr" autocomplete="off" placeholder="{{ 'Umsatz pro Jahr in Euro'|trans }}" value="{{inputUmsatzProJahr | number_format(2, ',', '.')}} €" disabled>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputAnteilPersAnUmsatz" class="col-sm-6 col-form-label">{{ 'Anteil Personalkosten an Umsatz in %'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" id="inputAnteilPersAnUmsatz" name="anteilPersAnUmsatz" autocomplete="off" placeholder="{{ 'Anteil Personalkosten an Umsatz in %'|trans }}" value="{{inputAnteilPersAnUmsatz}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputPersaufwand" class="col-sm-6 col-form-label">{{ 'Personalaufwand in €'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="inputPersaufwand" name="persaufwand" autocomplete="off" placeholder="{{ 'Personalaufwand in €'|trans }}" value="{{inputPersaufwand | number_format(2, ',', '.')}} €" disabled>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputDurchschnittsbon" class="col-sm-6 col-form-label">{{ 'Durchschnittsbon in Euro'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="number" step="0.1" class="form-control" id="inputDurchschnittsbon" name="durchschnittsbon" autocomplete="off" placeholder="{{ 'Durchschnittsbon in Euro'|trans }}" value="{{inputDurchschnittsbon}}">
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputKundenanzahl" class="col-sm-6 col-form-label">{{ 'Anzahl Kunden'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control" id="inputKundenanzahl" name="kundenanzahl" autocomplete="off" placeholder="{{ 'Anzahl Kunden'|trans }}" value="{{inputKundenanzahl}}" disabled>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <label for="inputAmortisierung" class="col-sm-6 col-form-label fw-bold">{{ 'Amortisierungszeit in Jahren'|trans }}</label>
+                    <div class="col-sm-6">
+                        <input type="number" class="form-control fw-bold" id="inputAmortisierung" name="amortisierung" autocomplete="off" placeholder="{{ 'Amortisierungszeit in Jahren'|trans }}" value="{{inputAmortisierung}}" disabled>
+                    </div>
+                </div>
+                <div class="col d-flex flex-column">
+                    <input type="hidden" name="sent" value=true>
+                    <button type="submit" class="btn btn-primary" type="button" id="button-addon1">{{ 'Amortisierung berechnen'|trans }}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock %}

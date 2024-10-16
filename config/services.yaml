@@ -4,6 +4,17 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    ad_user: '%env(USER_AD_USER)%'
+    ad_password: '%env(USER_AD_PASSWORD)%'
+    ldap_host: '%env(USER_LDAP_HOST)%'
+    ldap_dn: '%env(USER_LDAP_DN)%'
+    group_dn: '%env(USER_GROUP_DN)%'
+    erpag.user.redirect_route_name: index
+    app.webapp_title: '%env(WEBAPP_TITLE)%'
+    app.webapp_company_title: '%env(WEBAPP_COMPANY_TITLE)%'
+    app.icon.prefix: '%env(ICON_PREFIX)%'
+    app.upload_unc_path: '%env(UPLOAD_UNC_PATH)%'
+    app.unc_dirs: '%env(json:UNC_DIRS)%'
 
 services:
     # default configuration for services in *this* file
@@ -19,6 +30,10 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+
+    App\Service\AppService:
+        arguments:
+            $bormEvtDir: '%env(UPLOAD_UNC_PATH)%'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

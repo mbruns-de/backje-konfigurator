@@ -1,0 +1,31 @@
+{% extends 'layout.html.twig' %}
+
+{% block navbar %}
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ path('index') }}"><span class="fa fa-home"></span></a></li>
+            <li class="breadcrumb-item"><a href="{{ path('adressen') }}">{{ 'Adressen'|trans }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('konfiguration', {addressId: addressId, directory: directory}) }}">{{ 'Konfiguration'|trans }}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ 'Zusammenfassung'|trans }}</li>
+        </ol>
+    </nav>
+{% endblock %}
+
+{% block content %}
+<div class="list-group">
+    {% for price in priceArray %}
+    <div href="{{ path('adressen') }}" class="list-group-item list-group-item-action
+    {% if price.designation == 'Gesamt' %}
+    fw-bold
+    {% endif %}
+    ">
+        {# <span class="bi bi-ui-checks"></span> #}
+        {{ price.designation|trans }}
+        <span class="float-end">{{ price.price | number_format(2, ',', '.') }}€</span>
+    </div>
+    {% endfor %}
+</div>
+<div class="col d-flex flex-column mt-2">
+    <a href="{{ path('amortisierung', {gesamtsumme: gesamtpreis}) }}" class="btn btn-primary" type="button" id="button-addon1">{{ 'Gesamtpreis in Amortisierungsrechner übernehmen'|trans }}</a>
+</div>
+{% endblock %}

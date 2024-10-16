@@ -1,0 +1,61 @@
+{% extends 'layout.html.twig' %}
+
+{% block navbar %}
+    <li class="breadcrumb-item active" aria-current="page">{{ 'Adressen'|trans }}</li>
+{% endblock %}
+
+{% block content %}
+<form method="get">
+    <label for="filter" class="form-label">Adresssuche</label>
+    <input type="text" class="form-control mb-2" placeholder="Bezeichnung, Straße, Ort oder PLZ" name="filter" aria-label="adressensuche" {% if filter != '' %} value="{{filter}}" {% endif %} autocomplete="off">
+    <div class="col d-flex flex-column">
+        {% if filter != '' %}
+            <a class="btn btn-light btn-sm" href="{{ path(app.request.get('_route')) }}">Suche zurücksetzen</a>
+        {% endif %}
+        <input type="hidden" name="buttonSearchAdresse" value="1">
+        <button type="submit" class="btn btn-primary mb-2 mt-auto"><span id="submit-adressen-suche">Adresse suchen</span></button>
+    </div>
+</form>
+<div class="vnd-widget border rounded">
+    <div class="vnd-header">
+        <h5 class="vnd-title">Kundenadressen</h5>
+        <h6 class="vnd-subtitle text-secondary">
+        {% if filter == ''%}
+            aktiv
+        {% else %}
+            nach Filter
+        {% endif %}
+        </h6>
+    </div>
+    <div class="vnd-content">
+        {% if addresses is not empty %}
+        <div class="table-responsive-size"> 
+            <ul class="list-group">
+                {% for address in addresses %}
+                    <a class="list-group-item list-group-item-action" href="{{ path('contact', {addressId: address.id }) }}">
+                        {{ address.adrName }}
+                        <small class="float-end">{{ address.ort }}</small>
+                    </a>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <div class="alert alert-danger" role="alert">
+            <p class="mb-0"> Es konnten keine Adressen gefunden werden. Bitte die Suche ändern!</p>
+        </div>
+        {% endif %}
+            {{ app_get_pagination(
+                pagination_count,
+                pagination_limit,
+                app.request.get('page', 1),
+                app.request.get('_route'),
+                'justify-content-center'
+            )|raw }}
+        </div>
+    </div>
+    {% if app.request.get('filter') is not null %}
+    <div class="d-grid gap-2 mt-2">
+        <a href="{{ path('contact', {addressId: 0}) }}" class="btn btn-danger" role="button">Konfiguration für Neukunden</a>
+    </div>
+{% endif %}
+{% endblock %}

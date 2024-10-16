@@ -1,0 +1,31 @@
+{% set maxPage = (count / limit)|round(0, 'ceil') %}
+
+{% if maxPage > 1 %}
+    <nav id="{{divName}}-container" data-maxpage="{{maxPage}}">
+        <ul class="pagination pagination-sm {{ extraClass ?? '' }}">
+            <li class="page-item disabled">
+                <a class="page-link" href="#">{{ currentPage }} von {{ maxPage }}</a>
+            </li>
+            <li class="page-item">
+                <a id="{{divName}}-page-first" class="{{divName}}-page-button page-link" href="{{ path(routeName, app.request.query.all|merge({page: 1})) }}">
+                    Erste
+                </a>
+            </li>
+            <li class="page-item {% if currentPage == 1 %}disabled{% endif %}">
+                <a id="{{divName}}-page-left" class="{{divName}}-page-button page-link" href="{{ path(routeName, app.request.query.all|merge({page: currentPage - 1})) }}">
+                    &laquo;
+                </a>
+            </li>
+            <li class="page-item {% if currentPage == maxPage %}disabled{% endif %}">
+                <a id="{{divName}}-page-right" class="{{divName}}-page-button page-link" href="{{ path(routeName, app.request.query.all|merge({page: currentPage + 1})) }}">
+                    &raquo;
+                </a>
+            </li>
+            <li class="page-item">
+                <a id="{{divName}}-page-last" class="{{divName}}-page-button page-link" href="{{ path(routeName, app.request.query.all|merge({page: maxPage})) }}">
+                    Letzte
+                </a>
+            </li>
+        </ul>
+    </nav>
+{% endif %}

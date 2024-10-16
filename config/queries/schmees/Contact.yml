@@ -1,0 +1,77 @@
+default:
+    select:
+        - ID: ADR_SACHB_ID
+        - VORNAME: VORNAME
+        - NACHNAME: NACHNAME
+        - AKTIV: AKTIV
+        - ADDRESS_ID: ADR_ID
+        - FULL_NAME: case when VORNAME is null then NACHNAME else (NACHNAME + ', ' + VORNAME) end
+        - FULL_SEARCH: isnull(NACHNAME, '') + ',' + isnull(VORNAME, '') + ',' + isnull(ADR_SACHB_MOBIL, '') + ',' + isnull(ADR_SACHB_EMAIL, '') + ',' + isnull(ADR_SACHB_TEL, '') + ',' + (select isnull(NAME_FIRMA, '') from ADR_STAMM where ADR_ID = ADR_SACHB.ADR_ID)
+        - FUNKTION: FUNKTION
+        - ABTEILUNG: ABTEILUNG
+        - UNTERNEHMEN: (select isnull(NAME_FIRMA, '') from ADR_STAMM where ADR_ID = ADR_SACHB.ADR_ID)
+    from: ADR_SACHB
+    where:
+        AKTIV = 1
+        and isnull((select AKTIV from ADR_STAMM where ADR_ID = ADR_SACHB.ADR_ID), 0) = 1
+    order:
+        NACHNAME
+    relations:
+        address:
+            identifier: Address:by_contact
+            only_first: true
+            assignments:
+                ADDRESS_ID: ADDRESS_ID
+
+search:
+    extends: Contact:default
+
+detail:
+    select:
+        - ID: ADR_SACHB_ID
+        - VORNAME: VORNAME
+        - NACHNAME: NACHNAME
+        - AKTIV: AKTIV
+        - ADDRESS_ID: ADR_ID
+        - FULL_NAME: case when VORNAME is null then NACHNAME else (NACHNAME + ', ' + VORNAME) end
+        - TELEFON: ADR_SACHB_TEL
+        - FAX: ADR_SACHB_FAX
+        - EMAIL: ADR_SACHB_EMAIL
+        - MOBIL: ADR_SACHB_MOBIL
+        - FUNKTION: FUNKTION
+        - ABTEILUNG: ABTEILUNG
+        - BEMERKUNG: null
+    from: ADR_SACHB
+    where:
+        AKTIV = 1
+        and ID = [CONTACT_ID]
+    order:
+        NACHNAME
+    relations:
+        address:
+            identifier: Address:by_contact
+            only_first: true
+            assignments:
+                ADDRESS_ID: ADDRESS_ID
+
+by_address:
+    select:
+        - ID: ADR_SACHB_ID
+        - VORNAME: VORNAME
+        - NACHNAME: NACHNAME
+        - AKTIV: AKTIV
+        - ADDRESS_ID: ADR_ID
+        - FULL_NAME: case when VORNAME is null then NACHNAME else (NACHNAME + ', ' + VORNAME) end
+        - TELEFON: ADR_SACHB_TEL
+        - FAX: ADR_SACHB_FAX
+        - EMAIL: ADR_SACHB_EMAIL
+        - MOBIL: ADR_SACHB_MOBIL
+        - FUNKTION: FUNKTION
+        - ABTEILUNG: ABTEILUNG
+        - BEMERKUNG: null
+    from: ADR_SACHB
+    where:
+        AKTIV = 1
+        and ADDRESS_ID = [ADDRESS_ID]
+    order:
+        NACHNAME

@@ -1,0 +1,49 @@
+body {
+    padding-top: 19px;
+    padding-bottom: 50px;
+  }
+  
+  #floating-user-box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 9999;
+    background-color: #e9ecef;
+    color: #6c757d;
+    font-weight: 500;
+    padding: 9px 19px;
+  }
+
+  .vnd-widget {
+    /* border: 1px solid #EEEEEE;
+    border-radius: 8px; */
+    padding-top: 6px;
+    margin-bottom: 19px;
+  }
+
+  .vnd-widget > .vnd-header {
+    padding-bottom: 0px;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .vnd-widget > .vnd-content {
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 6px;
+  }
+
+  .vnd-widget > .vnd-header > .vnd-title {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 2px;
+    margin-bottom: 0px;
+  }
+
+  .vnd-widget > .vnd-header > .vnd-subtitle {
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-top: 0px;
+    margin-bottom: 2px;
+  }
